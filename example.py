@@ -1,7 +1,6 @@
 from flytekit import task, workflow, map_task
 import pystorms.scenarios
 import numpy as np
-from pystorms.scenarios.alpha import alpha
 from flytekit import ImageSpec
 
 
