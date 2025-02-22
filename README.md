@@ -25,33 +25,16 @@ A python package for the distributed simulation of urban water systems using fly
     envd context create --name flyte-sandbox --builder tcp --builder-address localhost:30003 --use
     ```
 
-### Build and Register Docker Image
-
-1. Build the custom Docker image:
-    ```bash
-    pyflyte build --image localhost:30000/hydra:latest
-    ```
-
-2. Push the image to the local registry:
-    ```bash
-    docker push localhost:30000/hydra:latest
-    ```
-
 ### Register and Run Workflow
 
-1. Install the package in development mode using uv:
+1. Install dependencies:
     ```bash
     uv sync
     ```
 
-2. Register the workflow with Flyte:
+1. Run the workflow:
     ```bash
-    pyflyte register --image localhost:30000/hydra:latest .
-    ```
-
-3. Run the workflow:
-    ```bash
-    pyflyte run --remote hello.py main --data '[0.5, 0.6, 0.7, 0.8, 10.0]'
+    uv run pyflyte run --remote example.py main --data '[0.5, 0.6, 0.7, 0.8, 10.0]'
     ```
 
 You can monitor the workflow execution in the Flyte UI at http://localhost:30080/console

@@ -1,7 +1,6 @@
 from flytekit import task, workflow, map_task
 import pystorms.scenarios
 import numpy as np
-from pystorms.scenarios.alpha import alpha
 from flytekit import ImageSpec
 
 
@@ -57,9 +56,17 @@ def run_simulation(alpha: float) -> float:
 
     return scenario.performance()
 
+@task(cache=True, cache_version="1.0", container_image=swmm_spec)
+def best_alpha(data: list[float], values:list[float]) -> float:
+    min_arg = np.argmin(values)
+    best_alpha = data[min_arg]
+    return best_alpha
+
 @workflow()
-def main(data : list[float] = [0.5, 0.6, 0.7, 0.8, 10.0]) -> list[float]:
-    return map_task(run_simulation)(alpha=data)
+def main(data : list[float] = [0.5, 0.6, 0.7, 0.8, 10.0]):
+    values = map_task(run_simulation)(alpha=data)
+    best_alpha(data=data, values=values)
+
 
 if __name__ == "__main__":
     print(main())
